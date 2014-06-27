@@ -36,6 +36,13 @@ module Split
       redirect url('/')
     end
 
+    post '/toggle/:experiment/:alternative' do
+      @experiment  = Split::Experiment.find(params[:experiment])
+      @alternative = Split::Alternative.new(params[:alternative], params[:experiment])
+      @alternative.send @alternative.enabled? ? :disable! : :enable!
+      redirect url('/')
+    end
+
     post '/start/:experiment' do
       @experiment = Split::Experiment.find(params[:experiment])
       @experiment.start

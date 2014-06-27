@@ -25,6 +25,27 @@ module Split
       name
     end
 
+    def flag_key
+      "#{key}:enabled"
+    end
+
+    def disable!
+      Split.redis.set flag_key, '0'
+    end
+
+    def enable!
+      Split.redis.set flag_key, '1'
+    end
+
+    def enabled?
+      value = Split.redis.get(flag_key)
+      value.nil? || value == '1'
+    end
+
+    def disabled?
+      !enabled?
+    end
+
     def goals
       self.experiment.goals
     end
@@ -50,6 +71,10 @@ module Split
           sum + completed_count(g)
         end
       end
+    end
+
+    def delete_flag
+      Split.redis.del(flag_key)
     end
 
     def unfinished_count
@@ -131,6 +156,7 @@ module Split
     end
 
     def delete
+      delete_flag
       Split.redis.del(key)
     end
 

@@ -37,7 +37,10 @@
     <% experiment.alternatives.each do |alternative| %>
       <tr>
         <td>
-          <%= alternative.name %>
+          <%= alternative.name %><br />
+          <form action="<%= url "/toggle/#{experiment.name}/#{alternative.name}" %>" method='post'>
+            <input type="submit" value="<%= alternative.enabled? ? 'Disable' : 'Enable' %>" class="<%= alternative.enabled? ? 'red' : 'green' %>">
+          </form>
           <% if alternative.control? %>
             <em>control</em>
           <% end %>

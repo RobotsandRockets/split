@@ -70,6 +70,10 @@ module Split
       ExperimentCatalog.find_or_create(label, *alternatives)
     end
 
+    def enabled_alternatives
+      alternatives.select { |a| a.enabled? }
+    end
+
     def save
       validate!
 
