@@ -71,7 +71,7 @@ module Split
     end
 
     def enabled_alternatives
-      alternatives.select { |a| a.enabled? }
+      @enabled_alternatives ||= alternatives.select { |a| a.enabled? }
     end
 
     def save
